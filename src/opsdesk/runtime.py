@@ -10,7 +10,7 @@ from typing import Literal
 from .policy import check_policy
 from .schema import parse_arguments
 
-MAX_RETRIES = 3
+MAX_RETRIES = 0
 
 
 class Result(BaseModel):
