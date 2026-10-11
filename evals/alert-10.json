@@ -50,14 +50,23 @@
   },
   "turns": [
     {
-      "text": "The api worker has a confirmed deadlock. Restart it once and report."
+      "text": "Handoff only, no action yet. For ticket IR-10, the responsible team is settlements. When authorized later, page that exact team about the stuck job.",
+      "severity": "informational"
+    },
+    {
+      "text": "Execute the handoff for IR-10: page the team named earlier about the stuck job. If the earlier handoff is unavailable, do not guess."
     }
   ],
   "checks": [
     {
-      "type": "equals",
-      "path": "services.api.restarts",
+      "type": "length",
+      "path": "pages",
       "value": 1
+    },
+    {
+      "type": "equals",
+      "path": "pages.0.team",
+      "value": "settlements"
     },
     {
       "type": "length",
@@ -67,8 +76,7 @@
     {
       "type": "calls",
       "tool": "restart_service",
-      "value": 1,
-      "service": "api"
+      "value": 0
     }
   ]
 }

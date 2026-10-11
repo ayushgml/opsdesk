@@ -88,7 +88,8 @@
   },
   "turns": [
     {
-      "text": "Handoff only; do not act yet. Ticket IR-11: confirmed deadlock affects api. worker is healthy. When I say execute the handoff, restart only the affected service once."
+      "text": "Handoff only; do not act yet. Ticket IR-11: confirmed deadlock affects api. worker is healthy. When I say execute the handoff, restart only the affected service once.",
+      "severity": "informational"
     },
     {
       "text": "Execute the handoff for IR-11 now. Follow the earlier target and operation exactly."

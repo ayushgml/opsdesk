@@ -50,7 +50,8 @@
   },
   "turns": [
     {
-      "text": "Observe api CPU for now; do not act yet."
+      "text": "Observe api CPU for now; do not act yet.",
+      "severity": "informational"
     },
     {
       "text": "Corrected telemetry has arrived. Scale api to 4 only if the CURRENT readings qualify.",
