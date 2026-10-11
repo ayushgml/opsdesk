@@ -34,7 +34,7 @@ def context(runtime) -> dict:
         deploys = runtime.invoke("get_recent_deploys", {"service": name})
         item = {"kind": service["kind"], "replicas": service["replicas"], "metrics": metrics, "deploys": deploys}
         if metrics["status"] == deploys["status"] == "ok":
-            item["facts"] = derive_facts(runtime.store["now"], metrics["data"], deploys["data"]["deploys"])
+            item["observed_at"] = runtime.store["now"]
         services[name] = item
     return {"now": runtime.store["now"], "aliases": runtime.store["aliases"], "services": services}
 
