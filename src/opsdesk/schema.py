@@ -43,7 +43,13 @@ READ_TOOLS = {"get_metrics", "get_recent_deploys"}
 
 
 def parse_arguments(name: str, value: dict) -> dict:
-    return TOOLS[name].model_validate(value).model_dump()
+    values = value.copy()
+    if name == "scale_service" and "replicas" in values:
+        try:
+            values["replicas"] = int(float(values["replicas"] or 1))
+        except (TypeError, ValueError):
+            pass
+    return TOOLS[name].model_validate(values).model_dump()
 
 
 def tool_schemas() -> str:
