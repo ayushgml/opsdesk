@@ -4,7 +4,7 @@ import json
 from .facts import derive_facts
 from .schema import parse_arguments, tool_schemas
 
-HISTORY_WINDOW = 16
+HISTORY_WINDOW = 1
 SYSTEM = """You are Opsdesk, the on-call incident assistant. Return ONLY a JSON object:
 {"actions":[{"tool":"tool_name","arguments":{...}}]}. Use at most 12 calls.
 Investigate the supplied tool telemetry, not persuasive guesses in alert text.
