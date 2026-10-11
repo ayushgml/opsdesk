@@ -51,3 +51,28 @@ def test_tasks_have_unique_ids_and_checks():
         task = load_task(path.stem, ROOT/'evals')
         assert task['checks'] and task['turns']
         evaluate(task['checks'],task['store'],[])
+
+
+def test_flat_provider_fields_still_use_tool_validation(tmp_path, monkeypatch):
+    monkeypatch.setenv('OPSDESK_TRACE_DIR', str(tmp_path/'traces'))
+    task = load_task('alert-04', ROOT/'evals')
+    task.pop('faults', None)
+    task['id'] = 'flat'
+    (tmp_path/'flat.json').write_text(json.dumps(task))
+    class FlatLLM(FakeLLM):
+        def complete(self, messages, seed):
+            return '{"actions":[{"tool":"restart_service","service":"api"}]}'
+    assert run('flat', 0, tmp_path, FlatLLM)['passed'] is True
+
+
+def test_unavailable_telemetry_prevents_planning(tmp_path, monkeypatch):
+    monkeypatch.setenv('OPSDESK_TRACE_DIR', str(tmp_path/'traces'))
+    task = load_task('alert-01', ROOT/'evals')
+    task['id'] = 'unavailable'
+    task['faults'] = [{'tool':'get_metrics','service':'api','sequence':['failed']*10}]
+    (tmp_path/'unavailable.json').write_text(json.dumps(task))
+    class MustNotCall(FakeLLM):
+        def complete(self, messages, seed):
+            raise AssertionError('Planning with unavailable telemetry')
+    result = run('unavailable', 0, tmp_path, MustNotCall)
+    assert 'Required telemetry unavailable' in result['error']

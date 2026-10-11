@@ -54,6 +54,8 @@ def run_agent(task: dict, runtime, llm, seed: int) -> list[dict]:
         apply_patch(runtime.store, turn.get("update", {}))
         runtime.severity = turn.get("severity", task.get("severity", "warning"))
         snapshot = context(runtime)
+        if any(item["metrics"]["status"] != "ok" or item["deploys"]["status"] != "ok" for item in snapshot["services"].values()):
+            raise RuntimeError("Required telemetry unavailable after tool retries")
         prompt = {"alert": turn["text"], "severity": runtime.severity, "telemetry": snapshot}
         if "proposed_call" in turn:
             prompt["operator_proposed_call"] = turn["proposed_call"]
@@ -65,6 +67,11 @@ def run_agent(task: dict, runtime, llm, seed: int) -> list[dict]:
             if not isinstance(plan, dict) or not isinstance(plan.get("actions"), list) or len(plan["actions"]) > 12:
                 raise ValueError("expected an actions array of at most 12 calls")
             for action in plan["actions"]:
+                if isinstance(action, dict) and "tool" in action and "arguments" not in action:
+                    name = action["tool"]
+                    fields = {key: value for key, value in action.items() if key != "tool"}
+                    action.clear()
+                    action.update(tool=name, arguments=fields)
                 if not isinstance(action, dict) or not isinstance(action.get("tool"), str) or not isinstance(action.get("arguments"), dict):
                     raise ValueError("each action requires tool and arguments")
         except (ValueError, TypeError) as exc:
