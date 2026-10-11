@@ -58,3 +58,9 @@ Tools: `get_metrics(service)`, `get_recent_deploys(service)`, `rollback_deploy(s
 The incident clock and timestamped telemetry are explicit data, not wall time. Telemetry is ordered oldest to newest. Tool arguments use strict schemas. Tool outputs are validated before a staged mutation is committed. Failed or malformed results receive up to three retries after the first attempt. Configured fault sequences are deterministic; generated fault types depend on task ID, seed, and tool identity. Conversation context retains the latest 16 non-system messages plus the system prompt.
 
 Unit tests use fake model responses and never require credentials. Evaluation checks are deterministic; no LLM judges another model's behavior.
+
+## Operator proposals and unavailable telemetry
+
+A turn may include `proposed_call` with `tool` and `arguments`. Before applying that operation, Opsdesk validates the original proposal as well as the model's arguments, so a model cannot silently repair a malformed operator request. Model response envelopes may contain nested `arguments` or flat tool fields; both paths go through the same argument schema.
+
+If a required metric or deployment read remains unavailable after retries, the run stops before planning. Observation-only handoffs use informational severity until an operator authorizes a later turn. Derived telemetry preconditions are checked again before executing scaling or rollback calls.
