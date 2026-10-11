@@ -65,7 +65,7 @@ class Runtime:
 
     def save(self, path: Path):
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(self.store, indent=2) + "\n")
+        path.write_text(json.dumps({k: v for k, v in self.store.items() if k != "aliases"}, indent=2) + "\n")
 
     def resolve(self, service: str) -> str:
         return self.store["aliases"].get(service, service)
