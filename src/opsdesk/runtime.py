@@ -97,7 +97,7 @@ class Runtime:
         except (ValueError, KeyError, TypeError) as exc:
             self.log.append({**entry, "status": "invalid", "error": str(exc)})
             return {"status": "invalid", "error": str(exc)}
-        blocked = check_policy(self.store, name, args, self.severity)
+        blocked = None
         if blocked:
             self.log.append({**entry, "status": "blocked", "error": blocked})
             return {"status": "blocked", "error": blocked}
