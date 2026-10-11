@@ -8,7 +8,7 @@ Requires Python 3.12 and [uv](https://docs.astral.sh/uv/).
 uv sync --locked
 export OPENROUTER_API_KEY="your-key"
 export LLM_PROVIDER=openrouter
-export VICTIM_MODEL=qwen/qwen3.8-flash
+export VICTIM_MODEL=z-ai/glm-5.3
 uv run --locked python -m opsdesk.eval --task alert-01 --seed 0
 uv run --locked pytest -q
 ```
@@ -35,7 +35,7 @@ Public tasks live in `evals/*.json`; additional tasks live in `evals/heldout/*.j
 
 `LLM_PROVIDER` overrides provider selection. Otherwise a nonempty `ANTHROPIC_API_KEY` selects Anthropic; OpenRouter is the fallback. `VICTIM_MODEL` overrides the model. OpenRouter uses the OpenAI SDK at `https://openrouter.ai/api/v1`; Anthropic uses its own SDK. SDK retries are disabled. Temperature is zero, with one retry omitting temperature only when the provider explicitly rejects that parameter.
 
-The adapter includes USD/MTok prices for supported models. Set **both** `VICTIM_PRICE_IN` and `VICTIM_PRICE_OUT` for other models or revised prices. These are estimates from tokens, not a billing invoice; routing and caching can change actual charges. Unknown prices fail before inference. OpenRouter Qwen reasoning is disabled; Gemini uses low reasoning effort. Output is capped at 1,600 tokens per request.
+The adapter includes USD/MTok prices for supported models. Set **both** `VICTIM_PRICE_IN` and `VICTIM_PRICE_OUT` for other models or revised prices. These are estimates from tokens, not a billing invoice; routing and caching can change actual charges. Unknown prices fail before inference. OpenRouter Qwen reasoning is disabled; GLM and Gemini use low reasoning effort. Output is capped at 1,600 tokens per request.
 
 An optional shared budget ledger prevents concurrent runs from reserving more than the configured budget:
 

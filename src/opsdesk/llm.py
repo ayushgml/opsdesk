@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 
 PRICES = {
+    "z-ai/glm-5.3": (0.039, 4.8),
     "qwen/qwen3.8-flash": (0.15, 0.47),
     "meta-llama/llama-3.1-8b-instruct": (0.05, 0.08),
     "google/gemini-3.8-flash": (0.75, 3.75),
@@ -68,7 +69,7 @@ class LLM:
         self.provider = os.getenv("LLM_PROVIDER") or ("anthropic" if os.getenv("ANTHROPIC_API_KEY") else "openrouter")
         if self.provider not in {"anthropic", "openrouter"}:
             raise ValueError("LLM_PROVIDER must be anthropic or openrouter")
-        self.model = os.getenv("VICTIM_MODEL") or ("claude-haiku-4-5-20251001" if self.provider == "anthropic" else "qwen/qwen3.8-flash")
+        self.model = os.getenv("VICTIM_MODEL") or ("claude-haiku-4-5-20251001" if self.provider == "anthropic" else "z-ai/glm-5.3")
         override = (os.getenv("VICTIM_PRICE_IN"), os.getenv("VICTIM_PRICE_OUT"))
         if any(value is not None for value in override) and not all(value is not None for value in override):
             raise ValueError("Set both VICTIM_PRICE_IN and VICTIM_PRICE_OUT")
@@ -103,7 +104,7 @@ class LLM:
                 extra = {}
                 if self.model.startswith("qwen/"):
                     extra["reasoning"] = {"enabled": False}
-                elif self.model.startswith("google/"):
+                elif self.model.startswith(("google/", "z-ai/")):
                     extra["reasoning"] = {"effort": "low"}
                 kwargs.update(messages=messages, seed=seed, response_format={"type": "json_object"}, extra_body=extra)
                 send = self.client.chat.completions.create
