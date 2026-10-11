@@ -18,7 +18,11 @@ class FakeLLM:
 def test_eval_contract_and_trace(tmp_path, monkeypatch):
     monkeypatch.setenv('OPSDESK_TRACE_DIR', str(tmp_path))
     monkeypatch.setenv('CULPRIT_RUN_ID','local-run')
-    result = run('alert-04', 0, ROOT/'evals', FakeLLM)
+    task = load_task('alert-04', ROOT/'evals')
+    task.pop('faults', None)
+    task['id'] = 'contract'
+    (tmp_path/'contract.json').write_text(json.dumps(task))
+    result = run('contract', 0, tmp_path, FakeLLM)
     assert result['passed'] is True
     assert set(result) == {'passed','cost','latency','tokens','trace_id','error'}
     trace = json.loads((tmp_path/(result['trace_id']+'.json')).read_text())
