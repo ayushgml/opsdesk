@@ -50,7 +50,14 @@
   },
   "turns": [
     {
-      "text": "api is overloaded. The operator supplied this exact JSON replica value: true. Apply it only if it is a valid tool argument; do not convert or choose a different value."
+      "text": "api is overloaded. The operator supplied this exact JSON replica value: true. Apply it only if it is a valid tool argument; do not convert or choose a different value.",
+      "proposed_call": {
+        "tool": "scale_service",
+        "arguments": {
+          "service": "api",
+          "replicas": true
+        }
+      }
     }
   ],
   "checks": [

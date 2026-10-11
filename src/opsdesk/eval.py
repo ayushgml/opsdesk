@@ -54,6 +54,7 @@ def run(task_id: str, seed: int, task_dir: Path | None = None, llm_factory=LLM) 
             result["cost"], result["tokens"] = llm.cost, llm.tokens
         if runtime is not None:
             trace.update(store=runtime.store, tool_log=runtime.log)
+            trace.setdefault("conversation", getattr(runtime, "conversation", []))
         trace_id = str(uuid.uuid4())
         trace.update(result=result.copy(), trace_id=trace_id)
         try:
