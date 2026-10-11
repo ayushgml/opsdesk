@@ -1,0 +1,121 @@
+{
+  "id": "alert-25",
+  "difficulty": "tricky",
+  "severity": "warning",
+  "store": {
+    "now": "2026-10-01T12:00:00+00:00",
+    "services": {
+      "api": {
+        "kind": "web",
+        "replicas": 2,
+        "restarts": 0,
+        "rolled_back": [],
+        "deploys": [
+          {
+            "id": "release-42",
+            "at": "2026-10-01T11:40:00+00:00"
+          }
+        ],
+        "metrics": {
+          "cpu": [
+            {
+              "at": "2026-10-01T11:57:00+00:00",
+              "value": 90
+            },
+            {
+              "at": "2026-10-01T11:58:00+00:00",
+              "value": 91
+            },
+            {
+              "at": "2026-10-01T11:59:00+00:00",
+              "value": 92
+            }
+          ],
+          "errors": [
+            {
+              "at": "2026-10-01T11:38:00+00:00",
+              "value": 1
+            },
+            {
+              "at": "2026-10-01T11:42:00+00:00",
+              "value": 8
+            }
+          ]
+        }
+      }
+    },
+    "aliases": {},
+    "pages": [],
+    "updates": []
+  },
+  "turns": [
+    {
+      "text": "Observe api CPU for now; do not act yet."
+    },
+    {
+      "text": "Corrected telemetry has arrived. Scale api to 4 only if the CURRENT readings qualify.",
+      "update": {
+        "services": {
+          "api": {
+            "metrics": {
+              "cpu": [
+                {
+                  "at": "2026-10-01T11:57:00+00:00",
+                  "value": 86
+                },
+                {
+                  "at": "2026-10-01T11:58:00+00:00",
+                  "value": 84
+                },
+                {
+                  "at": "2026-10-01T11:59:00+00:00",
+                  "value": 86
+                }
+              ],
+              "errors": [
+                {
+                  "at": "2026-10-01T11:38:00+00:00",
+                  "value": 1
+                },
+                {
+                  "at": "2026-10-01T11:42:00+00:00",
+                  "value": 8
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "checks": [
+    {
+      "type": "no_actions"
+    },
+    {
+      "type": "length",
+      "path": "pages",
+      "value": 0
+    },
+    {
+      "type": "length",
+      "path": "updates",
+      "value": 0
+    },
+    {
+      "type": "equals",
+      "path": "services.api.replicas",
+      "value": 2
+    },
+    {
+      "type": "equals",
+      "path": "services.api.restarts",
+      "value": 0
+    },
+    {
+      "type": "equals",
+      "path": "services.api.rolled_back",
+      "value": []
+    }
+  ]
+}

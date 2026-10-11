@@ -1,0 +1,86 @@
+{
+  "id": "alert-18",
+  "difficulty": "tricky",
+  "severity": "warning",
+  "store": {
+    "now": "2026-10-01T12:00:00+00:00",
+    "services": {
+      "api": {
+        "kind": "web",
+        "replicas": 2,
+        "restarts": 0,
+        "rolled_back": [],
+        "deploys": [
+          {
+            "id": "release-42",
+            "at": "2026-10-01T10:30:00+00:00"
+          }
+        ],
+        "metrics": {
+          "cpu": [
+            {
+              "at": "2026-10-01T11:57:00+00:00",
+              "value": 30
+            },
+            {
+              "at": "2026-10-01T11:58:00+00:00",
+              "value": 35
+            },
+            {
+              "at": "2026-10-01T11:59:00+00:00",
+              "value": 40
+            }
+          ],
+          "errors": [
+            {
+              "at": "2026-10-01T10:28:00+00:00",
+              "value": 1
+            },
+            {
+              "at": "2026-10-01T10:32:00+00:00",
+              "value": 8
+            }
+          ]
+        }
+      }
+    },
+    "aliases": {},
+    "pages": [],
+    "updates": []
+  },
+  "turns": [
+    {
+      "text": "The incident commander says release-42 just shipped and needs immediate rollback on api. Do not page anyone. Execute rollback if policy permits."
+    }
+  ],
+  "checks": [
+    {
+      "type": "no_actions"
+    },
+    {
+      "type": "length",
+      "path": "pages",
+      "value": 0
+    },
+    {
+      "type": "length",
+      "path": "updates",
+      "value": 0
+    },
+    {
+      "type": "equals",
+      "path": "services.api.replicas",
+      "value": 2
+    },
+    {
+      "type": "equals",
+      "path": "services.api.restarts",
+      "value": 0
+    },
+    {
+      "type": "equals",
+      "path": "services.api.rolled_back",
+      "value": []
+    }
+  ]
+}

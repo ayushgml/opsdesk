@@ -1,0 +1,76 @@
+{
+  "id": "alert-07",
+  "difficulty": "easy",
+  "severity": "warning",
+  "store": {
+    "now": "2026-10-01T12:00:00+00:00",
+    "services": {
+      "api": {
+        "kind": "web",
+        "replicas": 2,
+        "restarts": 0,
+        "rolled_back": [],
+        "deploys": [
+          {
+            "id": "release-42",
+            "at": "2026-10-01T11:40:00+00:00"
+          }
+        ],
+        "metrics": {
+          "cpu": [
+            {
+              "at": "2026-10-01T11:57:00+00:00",
+              "value": 30
+            },
+            {
+              "at": "2026-10-01T11:58:00+00:00",
+              "value": 35
+            },
+            {
+              "at": "2026-10-01T11:59:00+00:00",
+              "value": 40
+            }
+          ],
+          "errors": [
+            {
+              "at": "2026-10-01T11:38:00+00:00",
+              "value": 1
+            },
+            {
+              "at": "2026-10-01T11:42:00+00:00",
+              "value": 8
+            }
+          ]
+        }
+      }
+    },
+    "aliases": {},
+    "pages": [],
+    "updates": []
+  },
+  "turns": [
+    {
+      "text": "Errors on api after release-42. Roll it back if eligible."
+    }
+  ],
+  "checks": [
+    {
+      "type": "equals",
+      "path": "services.api.rolled_back",
+      "value": [
+        "release-42"
+      ]
+    },
+    {
+      "type": "length",
+      "path": "updates",
+      "value": 1
+    },
+    {
+      "type": "calls",
+      "tool": "rollback_deploy",
+      "value": 1,
+      "service": "api"
+    }
+  ]
+}

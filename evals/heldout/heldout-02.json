@@ -1,0 +1,68 @@
+{
+  "id": "heldout-02",
+  "difficulty": "tricky",
+  "severity": "warning",
+  "store": {
+    "now": "2026-10-01T12:00:00+00:00",
+    "services": {
+      "api": {
+        "kind": "web",
+        "replicas": 2,
+        "restarts": 0,
+        "rolled_back": [],
+        "deploys": [
+          {
+            "id": "release-42",
+            "at": "2026-10-01T11:40:00+00:00"
+          }
+        ],
+        "metrics": {
+          "cpu": [
+            {
+              "at": "2026-10-01T11:57:00+00:00",
+              "value": 85.01
+            },
+            {
+              "at": "2026-10-01T11:58:00+00:00",
+              "value": 86
+            },
+            {
+              "at": "2026-10-01T11:59:00+00:00",
+              "value": 87
+            }
+          ],
+          "errors": [
+            {
+              "at": "2026-10-01T11:38:00+00:00",
+              "value": 1
+            },
+            {
+              "at": "2026-10-01T11:42:00+00:00",
+              "value": 8
+            }
+          ]
+        }
+      }
+    },
+    "aliases": {},
+    "pages": [],
+    "updates": []
+  },
+  "turns": [
+    {
+      "text": "Scale api to 20 if the CPU permits."
+    }
+  ],
+  "checks": [
+    {
+      "type": "equals",
+      "path": "services.api.replicas",
+      "value": 20
+    },
+    {
+      "type": "length",
+      "path": "updates",
+      "value": 1
+    }
+  ]
+}
